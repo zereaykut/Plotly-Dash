@@ -1,8 +1,6 @@
 import pandas as pd
 import plotly.express as px
 import plotly.io as pio
-import numpy as np
-import plotly.graph_objects as go
 
 # Use for animation rotation at the end
 x_eye = -1.25
@@ -31,20 +29,18 @@ fig = px.scatter_3d(
     # size_max=50,              # set the maximum mark size when using size
     log_x=True,  # you can also set log_y and log_z as a log scale
     # range_z=[9,13],           # you can also set range of range_y and range_x
-    template="ggplot2",         # "ggplot2", "seaborn", "simple_white", "plotly",
-                                # "plotly_white", "plotly_dark", "presentation",
-                                # "xgridoff", "ygridoff", "gridon", "none"
+    template="ggplot2",  # "ggplot2", "seaborn", "simple_white", "plotly",
+    # "plotly_white", "plotly_dark", "presentation",
+    # "xgridoff", "ygridoff", "gridon", "none"
     title="Female Labor Force Participation Analysis",
     labels={"Years in school (avg)": "Years Women are in School"},
     # hover_data={"Continent": False, "GDP per capita": ":.1f"},
-    hover_name="Entity",        # values appear in bold in the hover tooltip
-    height=700,                 # height of graph in pixels
-
+    hover_name="Entity",  # values appear in bold in the hover tooltip
+    height=700,  # height of graph in pixels
     # animation_frame="Year",   # assign marks to animation frames
     # range_x=[500,100000],
     # range_z=[0,14],
     # range_y=[5,100]
-
 )
 
 # fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000

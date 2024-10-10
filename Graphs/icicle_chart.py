@@ -5,8 +5,7 @@ import plotly.express as px
 df = pd.read_csv("Data/Bills_of_Sale_of_Enslaved_Individuals__1718-1862.csv")
 print(df.head()[["Period", "Locality"]])
 
-fig = px.icicle(df, path=[px.Constant("all"), "Period", "Locality"],
-                values="Slaves")
+fig = px.icicle(df, path=[px.Constant("all"), "Period", "Locality"], values="Slaves")
 
 # fig = px.icicle(df, path=[px.Constant("all"), "Period", "Locality"],
 #                 values="Slaves", color="Locality")
