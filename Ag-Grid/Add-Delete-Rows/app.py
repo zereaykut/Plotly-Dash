@@ -1,8 +1,8 @@
 import dash_ag_grid as dag
-from dash import Dash, html, dcc, Input, Output, State, no_update, ctx
-import dash_bootstrap_components as dbc # pip install dash-bootstrap-components
+import dash_bootstrap_components as dbc  # pip install dash-bootstrap-components
 import pandas as pd
 import plotly.express as px
+from dash import Dash, Input, Output, State, ctx, dcc, html, no_update
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.CYBORG])
 
@@ -14,8 +14,8 @@ print(df.head())
 columnDefs = [
     {
         "headerName": "Gender",  # Name of table displayed in app
-        "field": "Gender",       # ID of table (needs to be the same as excel sheet column name)
-        "rowDrag": True,         # only need to activate on the first row for all to be draggable
+        "field": "Gender",  # ID of table (needs to be the same as excel sheet column name)
+        "rowDrag": True,  # only need to activate on the first row for all to be draggable
         "checkboxSelection": True,  # only need to activate on the first row
     },
     {
@@ -54,7 +54,6 @@ defaultColDef = {
 }
 
 
-
 table = dag.AgGrid(
     id="portfolio-table",
     className="ag-theme-alpine-dark",
@@ -87,14 +86,14 @@ app.layout = dbc.Container(
                                                     children="Delete row",
                                                     color="secondary",
                                                     size="md",
-                                                    className="mt-3 me-1"
+                                                    className="mt-3 me-1",
                                                 ),
                                                 dbc.Button(
                                                     id="add-row-btn",
                                                     children="Add row",
                                                     color="primary",
                                                     size="md",
-                                                    className="mt-3"
+                                                    className="mt-3",
                                                 ),
                                             ]
                                         ),
@@ -128,7 +127,6 @@ app.layout = dbc.Container(
 )
 
 
-
 # add or delete rows of table
 @app.callback(
     Output("portfolio-table", "deleteSelectedRows"),
@@ -146,7 +144,7 @@ def update_dash_table(n_dlt, n_add, data):
             "Money": [0],
             "Stock_Market": [""],
             "Objective": [""],
-            "Source": [""]
+            "Source": [""],
         }
         df_new_row = pd.DataFrame(new_row)
         updated_table = pd.concat([pd.DataFrame(data), df_new_row])
@@ -164,13 +162,15 @@ def update_dash_table(n_dlt, n_add, data):
 )
 def update_portfolio_stats(cell_change, data):
     dff = pd.DataFrame(data)
-    return dcc.Graph(figure=px.pie(
-        dff,
-        values="Money",
-        names="Source",
-        hole=0.3,
-        template="plotly_dark",
-    ))
+    return dcc.Graph(
+        figure=px.pie(
+            dff,
+            values="Money",
+            names="Source",
+            hole=0.3,
+            template="plotly_dark",
+        )
+    )
 
 
 if __name__ == "__main__":

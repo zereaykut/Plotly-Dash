@@ -1,6 +1,6 @@
 import dash_ag_grid as dag
-from dash import Dash, html, dcc, Input, Output, callback
 import pandas as pd
+from dash import Dash, Input, Output, callback, dcc, html
 
 app = Dash()
 
@@ -26,7 +26,7 @@ filter_function = {
     "below25": "params.data.age < 25",
     "between25and50": "params.data.age >= 25 && params.data.age <= 50",
     "above50": "params.data.age > 50",
-    "everyone": "true"
+    "everyone": "true",
 }
 
 app.layout = html.Div(
@@ -41,7 +41,7 @@ app.layout = html.Div(
             },
             value="everyone",
             inline=False,
-            style={"margin": "10px"}
+            style={"margin": "10px"},
         ),
         dag.AgGrid(
             id="external-filter-example",
@@ -63,8 +63,10 @@ app.layout = html.Div(
 def update_external_filter(filter_value):
     return {
         # if filter_value is not "everyone", then we will start filtering
-        "isExternalFilterPresent": {"function": "true" if filter_value != "everyone" else "false"},
-        "doesExternalFilterPass": {"function": filter_function[filter_value]}
+        "isExternalFilterPresent": {
+            "function": "true" if filter_value != "everyone" else "false"
+        },
+        "doesExternalFilterPass": {"function": filter_function[filter_value]},
     }
 
 

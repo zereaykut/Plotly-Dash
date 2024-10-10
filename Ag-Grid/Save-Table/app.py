@@ -1,9 +1,9 @@
-import dash_ag_grid as dag              
-from dash import Dash, html, dcc, Input, Output, State, no_update
-import dash_bootstrap_components as dbc 
-import pandas as pd                     
-import plotly.express as px
 import os
+
+import dash_ag_grid as dag
+import dash_bootstrap_components as dbc
+import pandas as pd
+from dash import Dash, Input, Output, State, dcc, html
 
 # canada_finance data from Nitin Datta on Kaggle (modified by me):
 # https://www.kaggle.com/datasets/nitindatta/finance-data?select=Finance_data.csv
@@ -17,7 +17,7 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.CYBORG])
 columnDefs = [
     {
         "headerName": "Gender",  # Name of table displayed in app
-        "field": "Gender",       # ID of table (needs to be the same as excel sheet column name)
+        "field": "Gender",  # ID of table (needs to be the same as excel sheet column name)
     },
     {
         "headerName": "Age",
@@ -55,7 +55,6 @@ defaultColDef = {
 }
 
 
-
 table = dag.AgGrid(
     id="portfolio-table",
     className="ag-theme-alpine-dark",
@@ -69,7 +68,11 @@ table = dag.AgGrid(
 
 app.layout = dbc.Container(
     [
-        html.Div("Investments Survey", className="h3 p-2 text-white bg-secondary", id="not-important"),
+        html.Div(
+            "Investments Survey",
+            className="h3 p-2 text-white bg-secondary",
+            id="not-important",
+        ),
         dbc.Row(
             [
                 dbc.Col(
@@ -83,32 +86,41 @@ app.layout = dbc.Container(
                                         value=datasets[0][0],
                                         placeholder="Select dataset",
                                         clearable=False,
-                                        style={"color":"black"}
-                                    ), style={"width": "18rem"},
+                                        style={"color": "black"},
+                                    ),
+                                    style={"width": "18rem"},
                                 ),
                                 dbc.CardBody(
                                     [
                                         table,
-                                        dbc.Row([
-                                           dbc.Col([
-                                               dbc.Input(
-                                                   id="save-name",
-                                                   placeholder="Save as...",
-                                                   type="text",
-                                                   value=None,
-                                                   className="mt-2"
-                                               ),
-                                           ], width=6),
-                                            dbc.Col([
-                                                dbc.Button(
-                                                    id="save-btn",
-                                                    children="Save Table",
-                                                    color="primary",
-                                                    size="md",
-                                                    className="mt-2"
+                                        dbc.Row(
+                                            [
+                                                dbc.Col(
+                                                    [
+                                                        dbc.Input(
+                                                            id="save-name",
+                                                            placeholder="Save as...",
+                                                            type="text",
+                                                            value=None,
+                                                            className="mt-2",
+                                                        ),
+                                                    ],
+                                                    width=6,
                                                 ),
-                                            ], width=3)
-                                        ]),
+                                                dbc.Col(
+                                                    [
+                                                        dbc.Button(
+                                                            id="save-btn",
+                                                            children="Save Table",
+                                                            color="primary",
+                                                            size="md",
+                                                            className="mt-2",
+                                                        ),
+                                                    ],
+                                                    width=3,
+                                                ),
+                                            ]
+                                        ),
                                     ]
                                 ),
                             ],
@@ -120,17 +132,19 @@ app.layout = dbc.Container(
             className="py-4",
         ),
         dbc.Row(
-            dbc.Alert(children=None,
-                      color="success",
-                      id="alerting",
-                      is_open=False,
-                      duration=2000,
-                      className="ms-4",
-                      style={"width":"18rem"}
+            dbc.Alert(
+                children=None,
+                color="success",
+                id="alerting",
+                is_open=False,
+                duration=2000,
+                className="ms-4",
+                style={"width": "18rem"},
             ),
-        )
+        ),
     ],
 )
+
 
 # retrieve dataset to display in table
 @app.callback(
@@ -151,17 +165,16 @@ def update_portfolio_stats(dataset_selected):
     Input("save-btn", "n_clicks"),
     State("save-name", "value"),
     State("portfolio-table", "rowData"),
-prevent_initial_call=True
+    prevent_initial_call=True,
 )
 def update_portfolio_stats(n, name, data):
     print(type(name))
-    if name is None or len(name)==0:
+    if name is None or len(name) == 0:
         return True, "No name provided", "danger"
     else:
         dff = pd.DataFrame(data)
         dff.to_csv(f"Data/{name}.csv", index=False)
         return True, "Data Saved! Well done!", "success"
-
 
 
 if __name__ == "__main__":
