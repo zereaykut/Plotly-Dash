@@ -1,0 +1,5 @@
+pandas
+plotly
+dash
+dash-ag-grid
+dash-bootstrap-components
